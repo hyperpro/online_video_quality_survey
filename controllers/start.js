@@ -1,24 +1,30 @@
 // start test:
 var get_initial_videos = require('../models/get_initial_videos')
 var process_user_feedback = require('../models/process_user_feedback')
+var get_next_video = require('../models/get_next_video')
+
 
 var fs = require('fs');
 
+// change it when you use a different website URL
 const server_path = "http://localhost:3001/static/videos/"
-const video_folder = "test_videos";
 
+const video_folder = "test_videos";
 const video_path = "./static/videos/" + video_folder;
 const video_url = server_path + video_folder + "/";
 
-var best_quality = video_url + "1.mp4";
-var worst_quality = video_url + "2.mp4";
+// default setting: best, worst video names are best & worst
+var best_quality = "1";
+var worst_quality = "2";
 
+// you have to pre-determine the # of videos.
 var num_vids;
 
 fs.readdir(video_path, function (err, files) {
     // examine # of videos
-    num_vids = files.length;
-    console.log(video_path + " has " + num_vids + " files");
+    let file_numbers;
+    file_numbers = files.length;
+    console.log("Initially, we have " + file_numbers + " videos.");
 });
 
 var post_example = async (ctx, next) => {
@@ -32,7 +38,9 @@ var post_start = async (ctx, next) => {
     var network = ctx.request.body.network;
 
     var initial_order = await get_initial_videos();
-    var video_order = [...initial_order];
+
+    var video_order = [best_quality, worst_quality, ...initial_order];
+    num_vids = video_order.length;
 
     console.log("User info: ", mturkID, device, age);
     console.log("videos", video_order)
@@ -88,7 +96,7 @@ var post_grade = async (ctx, next) => {
 }
 
 var post_first = async (ctx, next) => {
-    var video_src = video_url + "1.mp4";
+    var video_src = video_url + best_quality + ".mp4";
     // https://github.com/michaelliao/learn-javascript/raw/master/video/vscode-nodejs.mp4
     // very interesting url!
 
@@ -106,7 +114,7 @@ var post_training = async (ctx, next) => {
 var post_reference = async (ctx, next) => {
 
     ctx.render('reference.html', {
-        best_quality: best_quality, worst_quality: worst_quality
+        best_quality: video_url + best_quality + ".mp4", worst_quality: video_url + worst_quality + ".mp4"
     });
 }
 
@@ -150,8 +158,17 @@ var post_next = async (ctx, next) => {
     user.grade_time[user.count - 1] += exe_time;
 
     user.start = end;
+
     if (user.count < num_vids) {
+        var user_feedback = grade + '\n' + '\n' + exe_time;
+        var video_file_name = await get_next_video(user_feedback);
+        if (video_file_name != "-1") {
+            console.log("next video is not -1" + video_file_name);
+            user.video_order.splice(user.count, 1, video_file_name);
+        }
+
         var video_src = video_url + user.video_order[user.count] + ".mp4";
+
         user.count = user.count + 1;
         var title = user.count + "/" + num_vids;
 

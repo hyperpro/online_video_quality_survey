@@ -105,3 +105,7 @@ dist
 
 # Webstorm
 .idea
+
+#python cache
+.py/__pycache__
+.py/__pycache__/
