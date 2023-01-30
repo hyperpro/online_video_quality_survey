@@ -109,3 +109,8 @@ dist
 #python cache
 .py/__pycache__
 .py/__pycache__/
+py/__pycache__
+
+#pycharm
+venv
+.venv
