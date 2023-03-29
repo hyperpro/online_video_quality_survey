@@ -65,4 +65,6 @@ class OurSimulator(PerfSimulator, ABC):
             total_videos += self.user_id_map_object[i].num_watched_videos
         self.total_videos = total_videos
 
+        for user in self.user_id_map_object:
+            print(user, len(self.user_id_map_object[user].watched_video_set), self.user_id_map_object[user].watched_video_set)
         return self.time_consumed, total_videos

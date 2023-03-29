@@ -110,7 +110,13 @@ dist
 .py/__pycache__
 .py/__pycache__/
 py/__pycache__
+performance_simulator/__pycache__
+performance_simulator/__pycache__/
 
 #pycharm
 venv
 .venv
+
+# MacOS
+.DS_Store
+package-lock.json
