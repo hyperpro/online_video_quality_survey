@@ -35,6 +35,7 @@ class Event:
 @dataclass
 class User:
     user_id: int = field(default=0)
+    i_th_in_batch: int = field(default=0)
     start_time: int = field(default=0)
     end_time: int = field(default=0)
     num_watched_videos: int = field(default=0)
@@ -44,6 +45,9 @@ class User:
 
 @dataclass
 class VideoTopo:
+    """
+    The input logic of users
+    """
     video_dependency: Dict[int, Set[int]] = field(default_factory=Dict)
     video_id_map_needed: Dict[int, int] = field(default_factory=Dict)
 
@@ -59,15 +63,19 @@ class VideoTopo:
         for video_id in self.video_dependency:
             self.in_degree_map_video_set[self.video_id_map_in_degree[video_id]].add(video_id)
 
-    def get_next_video(self, already_watched: Set[int]) -> int | None:
-        candidate_set = [i for i in self.in_degree_map_video_set[0] if
-                         i not in already_watched and self.video_id_map_view_time[i] < self.video_id_map_needed[i]]
+    def get_next_video(self, already_watched: Set[int]) -> Dict[int, int] | None:
+        candidate_set = {}
+        for video_id in self.in_degree_map_video_set[0]:
+            if video_id not in already_watched and \
+                    self.video_id_map_view_time[video_id] < self.video_id_map_needed[video_id]:
+                candidate_set[video_id] = self.video_id_map_needed[video_id] - self.video_id_map_view_time[video_id]
+
         if len(candidate_set) == 0:
             # No videos are selected
             return None
         else:
             # randomly select a video to rate
-            return random.choice(candidate_set)
+            return candidate_set
 
     def after_video_watched(self, video_id: int) -> None:
         self.video_id_map_view_time[video_id] += 1

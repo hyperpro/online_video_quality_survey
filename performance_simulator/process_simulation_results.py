@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from typing import List
 
 
-def draw_time_cost(b1: List[int], b2: List[int], our: List[int]) -> None:
+def draw_time_cost_cdf(b1: List[int], b2: List[int], our: List[int]) -> None:
     print('Time cost')
 
     # Sort the data in ascending order
@@ -33,7 +33,7 @@ def draw_time_cost(b1: List[int], b2: List[int], our: List[int]) -> None:
     plt.show()
 
 
-def draw_video_cost(b1: List[int], b2: List[int], our: List[int], opt: List[int]) -> None:
+def draw_video_cost_cdf(b1: List[int], b2: List[int], our: List[int], opt: List[int]) -> None:
     print('Money cost')
     print(b1)
     print(b2)
@@ -67,5 +67,36 @@ def draw_video_cost(b1: List[int], b2: List[int], our: List[int], opt: List[int]
     plt.xlabel('Number of video sessions viewed')
     plt.ylabel('CDF')
     plt.xlim(0)
+    plt.legend()
+    plt.show()
+
+
+def draw_time_line(b1_x: List[float], b1_y: List[float],b2_x: List[float], b2_y: List[float],b3_x: List[float], b3_y: List[float], x_label: str, y_label: str) -> None:
+
+    plt.plot(b1_x, b1_y, label='one batch baseline')
+    plt.plot(b2_x, b2_y,  label='multiple batch baseline')
+    plt.plot(b3_x, b3_y,  label='ours')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.xlim(0)
+    plt.ylim(0)
+
+    plt.legend()
+    plt.show()
+
+
+def draw_sess_line(b1_x: List[float], b1_y: List[float], b2_x: List[float], b2_y: List[float], b3_x: List[float],
+                   b3_y: List[float], b4_x: List[float], b4_y: List[float], x_label: str, y_label: str) -> None:
+    plt.plot(b1_x, b1_y, label='one batch baseline')
+    plt.plot(b2_x, b2_y,  label='multiple batch baseline')
+    plt.plot(b3_x, b3_y,  label='ours')
+    plt.plot(b4_x, b4_y,  label='opt')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.xlim(0)
+    plt.ylim(0)
+
     plt.legend()
     plt.show()
