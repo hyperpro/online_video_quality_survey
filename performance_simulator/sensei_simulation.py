@@ -1,5 +1,8 @@
 import collections
 import random
+
+import numpy as np
+
 from baseline_one_batch_simulator import OneBatchSimulator
 from baseline_multi_batch_simulator import MultiBatchSimulator
 from our_simulator import OurSimulator
