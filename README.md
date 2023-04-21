@@ -98,6 +98,21 @@ These are source codes for 1video experiment.
     ```
     in `app.js` . 
 
+2. When running npm install, the installation of package Node-calls-python may sometimes fail. 
+   This is caused by unrecognized python environment. One can first try deactivating conda environment by
+   ```
+   conda deactivate
+   ```
+   And then delete the module folder and re-run 
+   ```
+   npm install
+   ```
+   If problem persists, try to check Python virtual environment (or reinstall python) to make sure the python environment is desired and then delete module folder and re-run
+   ```
+   npm install
+   ```
+   
+
 ## About data
 
 1. The raw data collected from the website are .txt files, containing info about grades, order of videos, watching and decision time of each grade, and the content of the survey. I will up load them to `./raw_data/`, you can load these data into npy files with `process_data.py`, which has already been done and the npy files are in `./data` folder, so you may not need to deal with raw data. I have rejected unqualified results on MTurk, so all the results in the npy file are valid.
