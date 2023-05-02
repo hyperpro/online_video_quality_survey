@@ -428,11 +428,11 @@ def view_needed_variance() -> None:
                            x_label="view needed lower bound", y_label="Time span (seconds)")
 
 def sys_main() -> None:
-    # enumerate_trees()
+    enumerate_trees()
     level_ratio()
-    # cost_scale()
-    # max_user_num()
-    # view_needed_variance()
+    cost_scale()
+    max_user_num()
+    view_needed_variance()
 
 # b1_cost = []
 # b2_cost = []

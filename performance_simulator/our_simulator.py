@@ -98,7 +98,7 @@ class OurSimulator(PerfSimulator, ABC):
 
         # calculate how many more users we need
         users_needed = int((max_user_needed - min_user_num) * self.cost_scale) + min_user_num
-        if users_needed > self.active_user_num():
+        if users_needed > self.active_user_num() and self.active_user_num() < 40: # 40 means the limitation of masters
             # recruit users
             for i in range(0, min(users_needed - self.active_user_num(), self.max_active_user - self.active_user_num())):
                 self.create_recruiting_event(start_time=self.time_consumed, i_th_in_batch=i)
